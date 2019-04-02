@@ -3,6 +3,40 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
+	<style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        #box {
+            width: 500px;
+            height: 30px;
+            background-color: gray;
+            border-radius: 5px;
+            margin: 100px auto;
+            position: relative;
+        }
+
+        #overView {
+            width: 0px;
+            height: 30px;
+            border-radius: 5px;
+            background-color: blue;
+            text-align: center;
+            color: white;
+            line-height: 30px;
+        }
+
+        #barView {
+            width: 30px;
+            height: 50px;
+            background-color: blue;
+            border-radius: 5px;
+            position: absolute;
+            top: -10px;
+        }
+    </style>
 </head>
 <body>
 	helloworld
@@ -17,7 +51,37 @@
 
 	<h1>刘鑫</h1>
 	<h2>lx提交</h2>
+	<div id="box">
+        <div id="overView"></div>
+        <div id="barView"></div>
+    </div>
+	<script>
+        function $(id) {
+            return document.getElementById(id);
+        }
 
+        $("barView").onmousedown = function () {
+            document.onmousemove = function (evt) {
+                // 获取事件对象
+                var evt = evt || window.event;
+                console.log(evt);
+                var bar_left = evt.clientX - $("box").offsetLeft;
+                if (bar_left < 0) {
+                    bar_left = 0;
+                } else if (bar_left > $("box").offsetWidth - $("barView").offsetWidth) {
+                    bar_left = $("box").offsetWidth - $("barView").offsetWidth;
+                }
+                $("barView").style.left = bar_left + "px";
+                $("overView").style.width = bar_left + "px";
+                $("overView").innerHTML = parseInt($("overView").offsetWidth / ($("box").offsetWidth - $("barView").offsetWidth) * 100) + "%";
+            }
+        }
+
+        document.onmouseup = function () {
+            document.onmousemove = null;
+        }
+
+    </script>
 
 </body>
 </html>
